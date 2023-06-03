@@ -1,6 +1,5 @@
 package pages;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.support.PageFactory;

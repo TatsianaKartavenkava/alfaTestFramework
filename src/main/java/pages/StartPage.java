@@ -1,40 +1,60 @@
 package pages;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import static driver.DriverManager.getDriver;
 
 @Getter
 public class StartPage extends Page {
 
-    @AndroidFindBy(uiAutomator = "text(\"Вход в Alfa-Test\")")
-    MobileElement tittle;
+    @AndroidFindBy(xpath = "//android.widget.TextView[contains(@text, 'Вход в Alfa-Test')]")
+    private MobileElement tittle;
 
-    @AndroidFindBy(uiAutomator = "className(\"android.widget.EditText\").instance(0)")
-    MobileElement loginInputField;
+    @AndroidFindBy(id = "etUsername")
+    private MobileElement loginInputField;
 
     @AndroidFindBy(id = "etPassword")
-    MobileElement passwordInputField;
+    private MobileElement passwordInputField;
 
-    @AndroidFindBy(xpath = "//android.widget.Button")
-    MobileElement buttonGo;
+    @AndroidFindBy(uiAutomator = "text(\"Вход\")")
+    private MobileElement buttonGo;
 
-    public boolean isDisplayed() {
-        return loginInputField.isDisplayed();
+    @AndroidFindBy(xpath = "//android.widget.TextView[contains(@text, 'Введены неверные данные')]")
+    private MobileElement validationError;
+
+    public boolean tittleIsDisplayed() {
+        return tittle.isDisplayed();
     }
 
     @Step("Заголовок страницы")
-    public StartPage getTittle() {
-        tittle.getText();
-        return this;
+    public String getTittle() {
+        return tittle.getText();
+    }
+
+    @Step("Текст валидационной ошибки")
+    public String getErrorText() {
+        waitForElementToBeVisible(validationError, 10);
+        return validationError.getText();
     }
 
     @Step("Курсор в поле ввода логина")
     public void clickInLoginInput() {
         loginInputField.click();
+    }
+
+    @Step("Получаем аттрибуты поля логин")
+    public String enteredValueLogin() {
+        return loginInputField.getAttribute("text");
+    }
+
+    @Step("Получаем аттрибуты поля пароль")
+    public String enteredValuePass() {
+        return passwordInputField.getAttribute("text");
     }
 
     @Step("Курсор в поле ввода пароля")
@@ -59,5 +79,10 @@ public class StartPage extends Page {
         passwordInputField.clear();
         passwordInputField.sendKeys(password);
         return this;
+    }
+
+    private void waitForElementToBeVisible(MobileElement element, int timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), timeoutInSeconds);
+        wait.until(ExpectedConditions.visibilityOf(element));
     }
 }

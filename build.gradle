@@ -8,8 +8,6 @@ ext {
     allureVersion = '2.19.0'
     slf4jVersion = '1.7.30'
     testNGVersion = '6.8.5'
-//    jUnit5Version = '5.7.0'
-//    jUnitPlatformVersion = '1.8.1'
 }
 
 group = 'org.example'
@@ -20,27 +18,18 @@ repositories {
 }
 
 dependencies {
-///* junit */
-//    testImplementation "org.junit.jupiter:junit-jupiter:${jUnit5Version}"
-//    testImplementation "org.junit.jupiter:junit-jupiter-engine:${jUnit5Version}"
-//    testImplementation 'org.junit.platform:junit-platform-runner:1.7.2'
-//    testImplementation 'org.junit.platform:junit-platform-launcher:1.4.0'
-//    testImplementation "org.junit.platform:junit-platform-suite-api:${jUnitPlatformVersion}"
-//    testImplementation "org.junit.platform:junit-platform-suite-engine:${jUnitPlatformVersion}"
     /* test NG */
     testImplementation "org.testng:testng:${testNGVersion}"
-
     /* assertj */
     testImplementation 'org.assertj:assertj-core:3.23.1'
     /* allure */
-//    implementation "io.qameta.allure:allure-junit5:${allureVersion}"
     testImplementation "io.qameta.allure:allure-testng:${allureVersion}"
     testImplementation "io.qameta.allure:allure-assertj:${allureVersion}"
     implementation "io.qameta.allure:allure-java-commons:${allureVersion}"
     /* lombok */
     implementation "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-//    /* slf4j */
+    /* slf4j */
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
     implementation "org.slf4j:slf4j-simple:${slf4jVersion}"
     /* appium */
@@ -49,12 +38,10 @@ dependencies {
 
 test {
     useTestNG() {
-//        dependsOn cleanTest
-//       // ignoreFailures(false)
+        dependsOn cleanTest
+        ignoreFailures(false)
     }
-//  //  finalizedBy(allureServe)
+    finalizedBy(allureServe)
 }
-//tasks.withType(Test) {
-//    useJUnitPlatform()
-//}
+
 compileJava.dependsOn clean
